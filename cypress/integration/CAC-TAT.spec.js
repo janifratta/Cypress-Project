@@ -86,9 +86,12 @@ describe('Central de Atendimento ao Cliente TAT', function(){
     })
 
     it('envia o formuário com sucesso usando um comando customizado', function() {
+        cy.clock()
         cy.fillMandatoryFieldsAndSubmit()
 
         cy.get('.success').should('be.visible')
+        cy.tick(THREE_SECONDS_IN_MS)
+        cy.get('.success').should('not.be.visible')
     })
 
     it('seleciona um produto (YouTube) por seu texto', function() {
@@ -212,7 +215,7 @@ describe('Central de Atendimento ao Cliente TAT', function(){
             .invoke('val', longText)
         .should('have.value', longText)
       })
-      it.only('faz uma requisição HTTP', () => {
+      it('faz uma requisição HTTP', () => {
         cy.request('https://cac-tat.s3.eu-central-1.amazonaws.com/index.html')
         .should(function(response){
             const { status, statusText, body } = response
